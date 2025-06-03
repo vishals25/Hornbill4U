@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Home - Hornbill Facts</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="hero" id="hero">
+    <div class="center1">
+        <div>
+            <h1>Welcome to the Hornbill Conservation Project</h1>
+            <p id="small">🌿 Protecting Hornbills, Preserving Nature! 🌿</p>
+            <p id="align">Hornbills are among the most iconic birds, playing a crucial role in forest ecosystems. Our
+                mission is to study, conserve, and spread awareness about these magnificent birds.</p>
+            <p id="align">Explore our efforts and join us in making a difference! </p>
+            <button id="bdesign" onclick="location.href='#about'">Learn More</button>
+            <button id="b2design" onclick="location.href='#contact'">Get Involved</button>
+        </div>
+        <div><img src="{{ url_for('static', filename='image/hero2.png') }}" alt="hornbill" width="100%" height="90%">
+        </div>
+    </div>
+</section>
+
+<section class="hero" id="about">
+    <div class="center1">
+        <div class="center2">
+            <h1>About</h1>
+            <h2>Our Mission</h2>
+            <p id="small1">We are committed to protecting hornbill populations through research, conservation efforts,
+                and community engagement. By preserving their habitats, we ensure a sustainable future for these birds.
+            </p>
+            <h2>Why Hornbills?</h2>
+            <p id="small1">🌲 Forest Guardians – Hornbills help in seed dispersal, supporting forest regeneration.<br>
+                🦜 Endangered Species – Due to habitat loss and poaching, many hornbill species face <span
+                    id="space">extinction.</span><br>
+
+                🤝 Community Conservation – Working with local communities ensures long-term protection.</p>
+        </div>
+    </div>
+</section>
+
+<section class="gallery" id="gallery">
+    <h2>Hornbill Gallery</h2>
+    <div class="carousel">
+        <button id="prevBtn" class="nav-btn">❮</button>
+        <div class="carousel-container">
+            <div class="carousel-track">
+                <div class="container">
+                    <img src="{{ url_for('static', filename='image/gallery1.png') }}" alt="Image 1">
+                    <p>Great Hornbill (Buceros bicornis) <br/> <span><span class="bold">Found in:</span> India,Bhutan,Southeast Asia</span> <br> <span><span class="bold">Notable for:</span> Large size and striking yellow-black casque</span> <br> <span><span class="bold">IUCN Status:</span> <span style="color: orange;">Vulnerable (VU)</span></span></p>              
+                </div>
+                <div class="container center">
+                    <img src="{{ url_for('static', filename='image/gallery2.png') }}" alt="Image 2">
+                    <p>Indian Grey Hornbill(Ocyceros birostris)<br/> <span><span class="bold">Found in:</span> Indian subcontinent</span> <br> <span><span class="bold">Notable for:</span> Grey plumage and curved beak</span><br> <span><span class="bold">IUCN Status:</span> <span style="color: green;">Least Concern (LC)</span></span></p>                
+
+                </div>
+                <div class="container">
+                    <img src="{{ url_for('static', filename='image/gallery3.png') }}" alt="Image 3">
+                    <p>Oriental Pied Hornbill (Anthracoceros albirostris) <br/> <span><span class="bold">Found in:</span> Southeast Asia,Indian subcontinent</span> <br> <span><span class="bold">Notable for:</span> Adaptability to different habitats</span><br> <span><span class="bold">IUCN Status:</span> <span style="color: green;">Least Concern (LC)</span></span></p>                
+                    
+                </div>
+                <div class="container">
+                    <img src="{{ url_for('static', filename='image/gallery4.png') }}" alt="Image 4">
+                    <p>Rufous-necked Hornbill (Aceros nipalensis) <br/> <span><span class="bold">Found in:</span> Northeast India, Bhutan, Myanmar</span> <br> <span><span class="bold">Notable for:</span> Bright rufous neck</span><br> <span><span class="bold">IUCN Status:</span> <span style="color: orange;">Vulnerable (VU)</span></span></p>                
+
+                </div>
+                <div class="container">
+                    <img src="{{ url_for('static', filename='image/gallery5.png') }}" alt="Image 5">
+                    <p>Wreathed Hornbill (Rhyticeros undulatus) <br/> <span><span class="bold">Found in:</span> Northeast India, Southeast Asia</span> <br> <span><span class="bold">Notable for:</span> “wreath-like” ridges on casque</span><br> <span><span class="bold">IUCN Status:</span> <span style="color: green;">Least Concern (LC)</span></span></p>                
+
+                </div>
+                <div class="container">
+                    <img src="{{ url_for('static', filename='image/gallery6.png') }}" alt="Image 5">
+                    <p>Black-casqued Hornbill (Ceratogymna atrata) <br/> <span><span class="bold">Found in:</span> Sierra Leone,Nigeria,Gabon</span> <br> <span><span class="bold">Notable for:</span> That echo through the rainforest.</span><br> <span><span class="bold">IUCN Status:</span> <span style="color: green;">Least Concern (LC)</span></span></p>                
+
+                </div>
+                <div class="container">
+                    <img src="{{ url_for('static', filename='image/gallery7.png') }}" alt="Image 5">
+                    <p>Narcondam Hornbill (Rhyticeros narcondami) <br/> <span><span class="bold">Found in:</span> Narcondam Island</span> <br> <span><span class="bold">Notable for:</span> Extremely rare to one island</span><br> <span><span class="bold">IUCN Status:</span> <span style="color: red;">Endangered (EN)</span></span></p>                
+
+                </div>
+                <div class="container">
+                    <img src="{{ url_for('static', filename='image/gallery8.png') }}" alt="Image 5">
+                    <p>Southern Ground Hornbill (Bucorvus leadbeateri) <br/> <span><span class="bold">Found in:</span> Sub-Saharan Africa</span> <br> <span><span class="bold">Notable for:</span> Ground-dwelling behavior</span><br> <span><span class="bold">IUCN Status:</span> <span style="color: orange;">Vulnerable (VU)</span></span></p>                
+
+                </div>
+                <div class="container">
+                    <img src="{{ url_for('static', filename='image/gallery9.png') }}" alt="Image 5">
+                    <p>Helmeted Hornbill (Rhinoplax vigil) <br/> <span><span class="bold">Found in:</span> Malay Peninsula, Sumatra, Borneo</span> <br> <span><span class="bold">Notable for:</span> Solid casque used in combat, critically endangered due to illegal trade</span><br> <span><span class="bold">IUCN Status:</span> <span style="color: red;">Critically Endangered (CR)</span></span></p>                
+
+                </div>
+            </div>
+        </div>
+        <button id="nextBtn" class="nav-btn">❯</button>
+    </div>
+</section>
+
+
+<section class="gallery" id="news">
+    <h2>Stay Updated on Hornbill Conservation!</h2>
+    <div class="image-grid">
+        <div class="image-item" id="itme1">
+            <img src="{{ url_for('static', filename='image/news1.png') }}" alt="Hornbill perched on a tree">
+            <p class="head">
+                State's hornbill conservation centre to come up at ATR
+            </p>
+            <p class="sub_head">Oppili.P / Mar 29, 2025, 00:56 IST</p>
+            <p class="para">Credits: Times of India <br/>
+                "Read full article on Times of India"</p>
+            <a href="https://timesofindia.indiatimes.com/city/chennai/states-hornbill-conservation-centre-to-come-up-at-atr/articleshow/119671928.cms"
+                target="_blank">
+                <button class="button">Visit</button>
+            </a>
+        </div>
+        <div class="image-item item2">
+            <img src="{{ url_for('static', filename='image/news2.png') }}" alt="Hornbill perched on a tree">
+            <p class="head">
+                Wildlife conservation seeks better security measures in Khanapur
+            </p>
+            <p class="sub_head">TNN / Mar 18, 2025, 21:50 IST</p>
+            <p class="para">Credits: Times of India <br/>
+                "Read full article on Times of India"</p>
+            <a href="https://timesofindia.indiatimes.com/city/hubballi/wildlife-conservationist-seeks-better-security-measures-in-khanapur-forest/articleshow/119171120.cms"
+                target="_blank">
+                <button class="button">Visit</button>
+            </a>
+
+        </div>
+        <div class="image-item item3">
+            <img src="{{ url_for('static', filename='image/news3.jpg') }}" alt="Hornbill perched on a tree">
+            <p class="head">
+                Explore More Update on Hornbill
+            </p>
+            <p class="para1">Credits: Times of India <br/>
+                "Read full article on Times of India"</p>
+            <a href="https://timesofindia.indiatimes.com/topic/hornbill/news" target="_blank">
+                <button class="button1">See More</button>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="facts" id="resource">
+    <h2>Project Paper/Resource</h2>
+    <ul>
+        <li>
+            <div class="dis"><img src="{{ url_for('static', filename='image/res1.png') }}" alt="res1">
+                <h3>Searching similar weather maps using convolutional autoencoder and satellite
+                    images</h3>
+            </div>
+            <p class="author"><span class="col">Author:</span>(Heewoong Ahn, Sunhwa Lee, Hanseok Ko, Meejoung Kim, Sung Won Han, and Junhee Seok, 2022)</p>
+            <p class="para"> "A weather forecaster predicts the weather by analyzing current weather map images generated by a satellite. In this analyzing process, the accuracy of the prediction depends highly on the forecaster’s experience which is needed to recollect similar weather maps from the past" (Ahn et al., 2022). </p>
+            <a href="https://www.sciencedirect.com/science/article/pii/S2405959522000546" target="_blank"><button
+                    class="button">Link</button></a>
+        </li>
+        <li>
+            <div class="dis1"><img src="{{ url_for('static', filename='image/res2.png') }}" alt="res2">
+                <h3 class="align"> Acta Oecologica</h3>
+            </div>
+            <p class="author"><span class="col">Author:</span> (Rohit Naniwadekar, Akanksha Rathore, Ushma Shukla, Saniya Chaplod, and Aparajita Datta, 2022)</p>
+            <p class="para"> "Biotic seed dispersal of plants is a complex phenomenon that is influenced by multiple seed disperser species with implications for plant fitness and range expansions" (Naniwadekar et al., 2022).</p>
+            <a href="https://www.sciencedirect.com/journal/acta-oecologica"><button
+                    class="button1">Link</button></a>
+        </li>
+        <li>
+            <div class="dis"><img src="{{ url_for('static', filename='image/res3.png') }}" alt="res3">
+                <h3>Classification of Animal Movement Behavior through Residence in Space and Time</h3>
+            </div>
+            <p class="author"><span class="col">Author:</span> (Leigh G. Torres, Rachael A. Orben, Irina Tolkova, and David R. Thompson, 2017)
+            </p>
+            <p class="para"> "Identification and classification of behavior states in animal movement data can be complex, temporally biased, time-intensive, scale-dependent, and unstandardized across studies and taxa" (Torres et al., 2017).</p>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/28045906/"><button
+                    class="button">Link</button></a>
+        </li>
+        <li>
+            <div class="dis1"><img src="{{ url_for('static', filename='image/res4.png') }}" alt="res4">
+                <h3>A Physics-Inspired Mechanistic Model of Migratory Movement Patterns in Birds</h3>
+            </div>
+            <p class="author"><span class="col">Author:</span> (Christopher Revell and Marius Somveille, 2021)
+            </p>
+            <p class="para">"Animal migration, the seasonal movements of billions of organisms across the globe, is one of the most remarkable phenomena in nature" (Revell and Somveille, 2021).</p>
+            <a href="https://www.nature.com/articles/s41598-017-09270-6"><button
+                    class="button1">Link</button></a>
+        </li>
+    </ul>
+</section>
+
+<section class="facts" id="facts">
+    <h2>Did You Know?</h2>
+    <ul>
+        <li class="fact-item">
+            <span class="question">Hornbills have unique beaks.</span>
+            <span class="arrow">&#9660;</span>  <!-- Down arrow ▼ -->
+            <p class="answer">Their beaks can grow up to 19 inches in some species.</p>
+        </li>
+        <li class="fact-item">
+            <span class="question">Hornbills help regenerate forests.</span>
+            <span class="arrow">&#9660;</span>
+            <p class="answer">They play a crucial role in seed dispersal.</p>
+        </li>
+        <li class="fact-item">
+            <span class="question">Great hornbills live long.</span>
+            <span class="arrow">&#9660;</span>
+            <p class="answer">They can live up to 50 years in the wild.</p>
+        </li>
+        <li class="fact-item">
+            <span class="question">Hornbills protect their nests.</span>
+            <span class="arrow">&#9660;</span>
+            <p class="answer">They seal nests with mud to guard against predators.</p>
+        </li>
+    </ul>
+</section>
+
+<section class="facts" id="contact">
+    <h2>Contact Us</h2>
+    <h5>Did you want to Contribute? Fill the Form...</h5>
+    <form action="https://api.web3forms.com/submit" method="POST" id="form">
+        <input type="hidden" name="access_key" value="31f8aa10-153a-4a95-92d9-51b6f7359c4d">
+        <div class="align">
+            <div class="sec">
+                <label for="firstname">First Name:</label>
+                <input type="text" name="firstname" placeholder="Firstname" required>
+            </div>
+            <div class="sec1">
+                <label for="lastname">Last Name:</label>
+                <input type="text" name="lastname" placeholder="Lastname" required>
+            </div>
+        </div>
+        <div class="sec2">
+            <label for="email">Email</label>
+            <input type="email" name="email" placeholder="Email" required>
+        </div>
+        <div class="sec3">
+            <label for="message">Message:</label>
+            <textarea name="message" id="message" placeholder="Enter the message" required></textarea>
+        </div>
+        <button type="submit">Submit</button>
+        <p id="result"></p>
+    </form>    
+</section>
+
+
+<section class="contributors" id="contributors">
+    <h2>👨‍🏫 Guide / Mentor</h2>
+    <div class="mentor">
+        <img src="{{ url_for('static', filename='image/mentor.png') }}" alt="Mentor">
+        <p class="name">Dr.R. Nedunchezhian</p>
+        <p class="role">Project Guide</p>
+    </div>
+    <h2>🤝 External Mentor</h2>
+    <div class="contributors-list">
+        <div class="member">
+            <img src="{{ url_for('static', filename='image/ementor1.png') }}" alt="Contributor 1">
+            <p class="name">Dr. P. Pramod</p>
+            <p class="role">Senior Principal Scientist</p>
+        </div>
+        <div class="member">
+            <img src="{{ url_for('static', filename='image/ementor2.png') }}" alt="Contributor 2">
+            <p class="name">Dr. M. Mahendiran</p>
+            <p class="role">Senior Scientis</p>
+        </div>
+    </div>
+    <h2>🌟 Project Contributors</h2>
+    <div class="contributors-list">
+        <div class="member">
+            <img src="{{ url_for('static', filename='image/c1.png') }}" alt="Contributor 1">
+            <p class="name">Aneesh V</p>
+            <p class="role">Frontend Developer</p>
+        </div>
+        <div class="member">
+            <img src="{{ url_for('static', filename='image/c2.png') }}" alt="Contributor 2">
+            <p class="name">Anish M</p>
+            <p class="role">Backend Developer</p>
+        </div>
+        <div class="member">
+            <img src="{{ url_for('static', filename='image/c3.png') }}" alt="Contributor 3">
+            <p class="name">Dines S</p>
+            <p class="role">Frontend Developer</p>
+        </div>
+        <div class="member">
+            <img src="{{ url_for('static', filename='image/c4.png') }}" alt="Contributor 4">
+            <p class="name">Vishal S</p>
+            <p class="role">Backend Developer</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

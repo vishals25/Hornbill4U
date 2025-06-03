@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Hornbill - The Hornbill Converstion Project{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='image/logo1.png') }}">
+  {% block head %}{% endblock %}
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<body>
+
+  <video autoplay loop muted playsinline class="background-video">
+    <source src="{{ url_for('static', filename='video/bg.mp4') }}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <header class='header'>
+    <nav class="nav">
+      <a href="/"><img src="{{ url_for('static', filename='image/logo1.png') }}" alt="logo" width="70" height="50"></a>
+      <ul class="nav-links">
+        <li class="dropdown">
+          <a href="/">Home <span class="dropdown-arrow">▼</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/#about">About</a></li>
+            <li><a href="/#gallery">Hornbill Gallery</a></li>
+            <li><a href="/#news">Current NEWS</a></li>
+            <li><a href="/#resource">Resource</a></li>
+            <li><a href="/#facts">FAQ</a></li>
+            <li><a href="/#contact">Contact Us</a></li>
+          </ul>
+        </li>
+        <!-- <li class="dropdown">
+                <a href="/visualize">Visualize <span class="dropdown-arrow">▼</span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/visualize">Single Bird Movement</a></li>
+                    <li><a href="/visualize#Section2">Multiple Bird Movement</a></li>
+                    <li><a href="/subpage2">Specific Bird Movement</a></li>
+                </ul>
+            </li> -->
+        <li><a href="/visualize">WingFlow</a></li>
+        <li class="dropdown">
+          <a href="/clustervisualize">Cluster Visualization <span class="dropdown-arrow">▼</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="clustervisualize#clusterbird">Cluster Bird Map</a></li>
+            <li><a href="clustervisualize#birdmovement">Bird Movement Map</a></li>
+          </ul>
+        </li>
+        <li><a href="/distance">Distance</a></li>
+        <li><a href="/travel_pattern">Travel Pattern Cluster</a></li>
+      </ul>
+      <img src="{{ url_for('static', filename='image/hamburger.png') }}" alt="hamburger" class="hamburger"
+        id="hamburger-icon" width="20" height="20"
+        data-hamburger="{{ url_for('static', filename='image/hamburger.png') }}"
+        data-close="{{ url_for('static', filename='image/close.png') }}">
+
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <button id="chatbot-button">💬</button>
+
+  <!-- Chatbot Container -->
+  <div id="chatbot-container">
+    <div id="chatbot-header">
+      <span>Chatbot</span>
+      <button id="close-chatbot">✖</button>
+    </div>
+    <div id="chatbot-messages"></div>
+    <div id="chatbot-input">
+      <input type="text" id="user-input" placeholder="Type your message...">
+      <button id="send-button">➤</button>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <a href="/">
+          <img src="{{ url_for('static', filename='image/logo.png') }}" alt="logo" width="90" height="70" />
+        </a>
+        <p class="footer-description">
+          A hornbill is a large, tropical bird known for its distinctive, curved bill and often vibrant casque on top.
+        </p>
+        <div class="social-media-icons">
+          <div class="social-icon">
+            <a href="https://www.facebook.com/"><img src="{{ url_for('static', filename='image/facebook.svg') }}"
+                alt="icon1" width="24" height="24" /></a>
+          </div>
+          <div class="social-icon">
+            <a href="https://www.instagram.com/"><img src="{{ url_for('static', filename='image/instagram.svg') }}"
+                alt="icon2" width="24" height="24" /></a>
+          </div>
+          <div class="social-icon">
+            <a href="https://x.com/?lang=en-in"><img src="{{ url_for('static', filename='image/twitter.svg') }}"
+                alt="icon2" width="24" height="24" /></a>
+          </div>
+          <!-- Add other icons as needed -->
+        </div>
+      </div>
+
+      <div id="mobile-warning" class="mobile-toast">
+        Switch to Desktop site view for a better experience!
+      </div>
+
+
+      <div class="footer-links">
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/visualize">Visualize</a></li>
+            <li><a href="/clustervisualize">Cluster Visualization</a></li>
+            <li><a href="/distance">Distance</a></li>
+            <li><a href="/travel_pattern">Travel Pattern Cluster</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Help</h4>
+          <ul>
+            <li><a href="/#about">About us</a></li>
+            <li><a href="/#facts">FAQs</a></li>
+            <li><a href="/#news">Upcoming NEWS</a></li>
+            <li><a href="/#resource">Project Resources</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Get in touch</h4>
+          <ul>
+            <li><a href="mailto:hornbillvault@gmail.com">hornbillvault@gmail.com</a></li>
+            <li><a href="tel:+92554862354">+92554862354</a></li>
+          </ul>
+        </div>
+        <!-- Add other sections as needed -->
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-left">
+        <img src="{{ url_for('static', filename='image/copyright-sign.svg') }}" alt="copyright" width="20"
+          height="20" />
+        <p class="align">Copyright. All Rights Reserved</p>
+      </div>
+      <!-- <p class="terms-and-conditions">Terms and Conditions</p> -->
+      <a href="https://www.hornbill.com/terms-use" class="terms-and-conditions" style="color: white;">Terms and
+        Conditions</a>
+    </div>
+  </footer>
+
+
+
+
+  {% block scripts %}
+  <script>
+
+    window.addEventListener('load', function () {
+      if (window.innerWidth <= 768) {
+        const warning = document.getElementById('mobile-warning');
+        warning.classList.add('show');
+
+        setTimeout(function () {
+          warning.classList.add('hide');
+        }, 3000); // start fading out after 3 seconds
+
+        setTimeout(function () {
+          warning.style.display = 'none';
+        }, 4000); // completely hide after 4 seconds
+      }
+    });
+
+    // Get the hamburger icon and the navigation links
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+
+    const hamburgerSrc = hamburgerIcon.dataset.hamburger;
+    const closeSrc = hamburgerIcon.dataset.close;
+
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('show');
+
+      if (navLinks.classList.contains('show')) {
+        hamburgerIcon.src = closeSrc;
+      } else {
+        hamburgerIcon.src = hamburgerSrc;
+      }
+    });
+
+
+    const container = document.getElementById('hero');
+    const about = document.getElementById('about');
+    const gallery = document.getElementById('gallery');
+    const facts = document.getElementById('facts');
+    const news = document.getElementById('news');
+    const resource = document.getElementById('resource');
+    const contact = document.getElementById('contact');
+    const contributors = document.getElementById('contributors');
+
+    // Scroll event to monitor the scroll position
+    window.addEventListener('scroll', function () {
+      // Get the elements' offset position
+      const aboutRect = about.getBoundingClientRect();
+      const galleryRect = gallery.getBoundingClientRect();
+      const factsRect = facts.getBoundingClientRect();
+      const newsRect = news.getBoundingClientRect();
+      const resourceRect = resource.getBoundingClientRect();
+      const contactRect = contact.getBoundingClientRect();
+      const contributorsRect = contributors.getBoundingClientRect();
+
+      // Hide hero section when about section reaches 450px from the top
+      if (aboutRect.top <= 450) {
+        container.style.opacity = '0'; // Fade out
+        container.style.visibility = 'hidden';
+      } else {
+        container.style.opacity = '1'; // Show
+        container.style.visibility = 'visible';
+      }
+
+      // Hide about section when gallery reaches 450px from the top
+      if (galleryRect.top <= 450) {
+        about.style.opacity = '0';
+        about.style.visibility = 'hidden';
+      } else {
+        about.style.opacity = '1';
+        about.style.visibility = 'visible';
+      }
+
+      // Change gallery background based on scroll
+      if (galleryRect.top <= 120) {
+        gallery.style.backgroundColor = 'rgba(238, 235, 232, 0.658)';
+      } else {
+        gallery.style.backgroundColor = 'rgba(238, 235, 232, 0.507)';
+      }
+
+      if (newsRect.top <= 450) {
+        gallery.style.opacity = '0';
+        gallery.style.visibility = 'hidden';
+      } else {
+        gallery.style.opacity = '1';
+        gallery.style.visibility = 'visible';
+      }
+
+      // Change gallery background based on scroll
+      if (news.top <= 120) {
+        news.style.backgroundColor = 'rgba(238, 235, 232, 0.758)';
+      } else {
+        news.style.backgroundColor = 'rgba(238, 235, 232, 0.507)';
+      }
+
+
+      if (resourceRect.top <= 350) {
+        news.style.opacity = '0';
+        news.style.visibility = 'hidden';
+      } else {
+        news.style.opacity = '1';
+        news.style.visibility = 'visible';
+      }
+
+      // Change facts background based on scroll
+      if (resourceRect.top <= 200) {
+        resource.style.backgroundColor = 'rgba(238, 235, 232, 0.658)';
+      } else {
+        resource.style.backgroundColor = 'rgba(238, 235, 232, 0.507)';
+      }
+
+      // Hide gallery when facts section reaches 350px from the top
+      if (factsRect.top <= 350) {
+        resource.style.opacity = '0';
+        resource.style.visibility = 'hidden';
+      } else {
+        resource.style.opacity = '1';
+        resource.style.visibility = 'visible';
+      }
+
+      // Change facts background based on scroll
+      if (factsRect.top <= 200) {
+        facts.style.backgroundColor = 'rgb(44,62,80)';
+      } else {
+        facts.style.backgroundColor = 'rgba(44,62,80,0.507)';
+      }
+
+      if (contactRect.top <= 450) {
+        facts.style.opacity = '0';
+        facts.style.visibility = 'hidden';
+      } else {
+        facts.style.opacity = '1';
+        facts.style.visibility = 'visible';
+      }
+
+      // Change facts background based on scroll
+      if (contactRect.top <= 200) {
+        contact.style.backgroundColor = 'rgb(236,240,241)';
+      } else {
+        contact.style.backgroundColor = 'rgba(238, 235, 232, 0.658)';
+      }
+
+      if (contributorsRect.top <= 550) {
+        contact.style.opacity = '0';
+        contact.style.visibility = 'hidden';
+      } else {
+        contact.style.opacity = '1';
+        contact.style.visibility = 'visible';
+      }
+
+      // Change facts background based on scroll
+      if (contributorsRect.top <= 200) {
+        contributors.style.backgroundColor = 'rgb(236,240,241)';
+      } else {
+        contributors.style.backgroundColor = 'rgba(238, 235, 232, 0.658)';
+      }
+    });
+
+
+    // chatbot
+    document.addEventListener("DOMContentLoaded", function () {
+      // Configuration
+      const CONFIG = {
+        API_URL: "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta", // Replace with an appropriate model URL if needed
+        API_KEY: "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", // IMPORTANT: Replace with your actual key
+        MAX_HISTORY: 5, // Limit conversation history
+        TYPING_DELAY: 6000 // Simulated typing delay
+      };
+
+      // DOM Element References
+      const elements = {
+        chatbotButton: document.getElementById("chatbot-button"),
+        chatbotContainer: document.getElementById("chatbot-container"),
+        closeChatbotButton: document.getElementById("close-chatbot"),
+        chatbotMessages: document.getElementById("chatbot-messages"),
+        userInput: document.getElementById("user-input"),
+        sendButton: document.getElementById("send-button")
+      };
+
+      // Conversation Management
+      class ChatManager {
+        constructor() {
+          this.conversationHistory = [];
+          this.responseCache = new Map();
+        }
+
+        trimHistory() {
+          if (this.conversationHistory.length > CONFIG.MAX_HISTORY * 2) {
+            this.conversationHistory = this.conversationHistory.slice(-CONFIG.MAX_HISTORY * 2);
+          }
+        }
+
+        addToHistory(message, sender) {
+          this.conversationHistory.push({ text: message, sender });
+          this.trimHistory();
+        }
+
+        getContextualPrompt(userMessage) {
+          const recentHistory = this.conversationHistory
+            .slice(-CONFIG.MAX_HISTORY * 2)
+            .map(msg => `${msg.sender}: ${msg.text}`)
+            .join('\n');
+
+          return `You are an expert on hornbills, providing comprehensive and accurate information about these fascinating birds. Your knowledge covers their biology, habitat, behavior, conservation status, and species diversity. Use the following structured information to provide clear, scientifically-based responses about hornbills.
+
+[ { "species_overview": { "total_species": 59, "habitat_regions": ["Africa", "Southeast Asia", "Indian Subcontinent"], "conservation_status": { "critically_endangered": ["Sulu Hornbill", "Visayan Hornbill"], "vulnerable": ["Helmeted Hornbill", "Rufous Hornbill"] } }, "key_characteristics": { "unique_features": [ "Large casque on bill", "Distinctive loud calls", "Important seed dispersers in forest ecosystems" ], "size_range": "45-150 cm", "diet": ["Fruits", "Insects", "Small vertebrates"] }, "ecological_importance": { "role_in_ecosystem": [ "Seed dispersal", "Forest regeneration", "Indicator species for forest health" ] } } ]
+
+Conversation History:\n${recentHistory}\n\nUser Message: ${userMessage}\n\nHornbill-Specific Response:`;
+        }
+
+        cacheResponse(message, response) {
+          this.responseCache.set(message, response);
+        }
+
+        getCachedResponse(message) {
+          return this.responseCache.get(message);
+        }
+
+        hasCachedResponse(message) {
+          return this.responseCache.has(message);
+        }
+      }
+
+      // UI Interaction Utilities
+      const UIUtils = {
+        displayMessage(text, isBot = true) {
+          const message = document.createElement("div");
+          message.className = isBot ? "bot-message" : "user-message";
+          message.textContent = text;
+          elements.chatbotMessages.appendChild(message);
+          elements.chatbotMessages.scrollTop = elements.chatbotMessages.scrollHeight;
+        },
+
+        showTypingIndicator() {
+          const typingMessage = document.createElement("div");
+          typingMessage.className = "bot-message";
+          typingMessage.textContent = "Typing...";
+          elements.chatbotMessages.appendChild(typingMessage);
+          elements.chatbotMessages.scrollTop = elements.chatbotMessages.scrollHeight;
+          return typingMessage;
+        }
+      };
+
+      // API Interaction Service
+      class HuggingFaceService {
+        static async fetchResponse(userMessage, chatManager) {
+          if (chatManager.hasCachedResponse(userMessage)) {
+            return chatManager.getCachedResponse(userMessage);
+          }
+
+          try {
+            const prompt = chatManager.getContextualPrompt(userMessage);
+
+            const response = await fetch(CONFIG.API_URL, {
+              method: "POST",
+              headers: {
+                "Authorization": `Bearer ${CONFIG.API_KEY}`,
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                inputs: prompt,
+                parameters: {
+                  max_new_tokens: 250,
+                  temperature: 0.5,
+                  top_k: 40,
+                  top_p: 0.9
+                }
+              })
+            });
+
+            if (!response.ok) {
+              throw new Error(`API Error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const fullGeneratedText = data[0]?.generated_text || this.getFallbackResponse();
+            const botResponse = this.extractModelResponse(fullGeneratedText, prompt);
+
+            chatManager.cacheResponse(userMessage, botResponse);
+            return botResponse;
+
+          } catch (error) {
+            console.error("API Interaction Error:", error);
+            return this.getFallbackResponse();
+          }
+        }
+
+        static extractModelResponse(fullText, prompt) {
+          const botResponse = fullText.replace(prompt, '').trim();
+          const cleanedResponse = botResponse.replace(/^(Hornbill-Specific Response:|\n)/g, '').trim();
+          const responseLines = cleanedResponse.split('\n');
+          return responseLines[0].trim();
+        }
+
+        static getFallbackResponse() {
+          const fallbacks = [
+            "I'm processing your request. Can you provide more details?",
+            "That's an intriguing question about the museum. Let me think.",
+            "I'm here to help. Could you clarify your query?",
+            "Can you rephrase that? I'll do my best to assist."
+          ];
+          return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+        }
+      }
+
+      // Chatbot Controller
+      class ChatbotController {
+        constructor() {
+          this.chatManager = new ChatManager();
+          this.initEventListeners();
+        }
+
+        initEventListeners() {
+          elements.chatbotButton.addEventListener("click", () => this.openChatbot());
+          elements.closeChatbotButton.addEventListener("click", () => this.closeChatbot());
+          elements.sendButton.addEventListener("click", () => this.handleUserMessage());
+          elements.userInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") this.handleUserMessage();
+          });
+        }
+
+        openChatbot() {
+          elements.chatbotContainer.style.display = "block";
+          elements.chatbotMessages.innerHTML = "";
+          UIUtils.displayMessage("Welcome! Ask me anything about Hornbills, and I'll do my best to assist.");
+        }
+
+        closeChatbot() {
+          elements.chatbotContainer.style.display = "none";
+        }
+
+        async handleUserMessage() {
+          const userMessage = elements.userInput.value.trim();
+          if (!userMessage) return;
+
+          UIUtils.displayMessage(userMessage, false);
+          this.chatManager.addToHistory(userMessage, 'user');
+          elements.userInput.value = "";
+
+          const typingIndicator = UIUtils.showTypingIndicator();
+
+          try {
+            await new Promise(resolve => setTimeout(resolve, CONFIG.TYPING_DELAY));
+            elements.chatbotMessages.removeChild(typingIndicator);
+
+            const botResponse = await HuggingFaceService.fetchResponse(userMessage, this.chatManager);
+            UIUtils.displayMessage(botResponse);
+            this.chatManager.addToHistory(botResponse, 'bot');
+
+          } catch (error) {
+            console.error("Message handling error:", error);
+            UIUtils.displayMessage("Sorry, something went wrong.");
+          }
+        }
+      }
+
+      // Initialize Chatbot
+      new ChatbotController();
+    });
+
+
+    const form = document.getElementById('form');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const object = Object.fromEntries(formData);
+      const json = JSON.stringify(object);
+      result.innerHTML = "Please wait..."
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: json
+      })
+        .then(async (response) => {
+          let json = await response.json();
+          if (response.status == 200) {
+            result.innerHTML = json.message;
+          } else {
+            console.log(response);
+            result.innerHTML = json.message;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          result.innerHTML = "Something went wrong! try again later";
+          result.style.color = "red";
+        })
+        .then(function () {
+          result.style.color = "green";
+          form.reset();
+          setTimeout(() => {
+            result.style.display = "none";
+          }, 3000);
+        });
+    });
+
+    document.querySelectorAll('.fact-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const arrow = item.querySelector('.arrow');
+
+        if (!arrow) {  // Check if .arrow exists inside .fact-item
+          console.error("Arrow element not found inside", item);
+          return;
+        }
+
+        const isOpen = item.classList.toggle('active');
+        arrow.innerHTML = isOpen ? "&#9650;" : "&#9660;"; // ▲ (up) when open, ▼ (down) when closed
+
+        console.log(`Clicked: ${item.textContent.trim()}, Open: ${isOpen}`);
+      });
+    });
+
+
+    const track = document.querySelector('.carousel-track');
+    const nextButton = document.getElementById('nextBtn');
+    const prevButton = document.getElementById('prevBtn');
+    const slides = document.querySelectorAll('.container');
+    const slideWidth = 310; // Include gap spacing
+    const visibleSlides = 3;
+    let index = 0;
+
+    // Function to move the carousel
+    const moveCarousel = () => {
+      track.style.transform = `translateX(-${index * slideWidth}px)`;
+
+      slides.forEach(slide => slide.classList.remove('center'));
+
+      if (slides[index + 1]) {
+        slides[index + 1].classList.add('center');
+      }
+    };
+
+    // Event Listener for Next Button
+    nextButton.addEventListener('click', () => {
+      index = (index < slides.length - visibleSlides) ? index + 1 : 0;
+      moveCarousel();
+    });
+
+    // Event Listener for Previous Button
+    prevButton.addEventListener('click', () => {
+      index = (index > 0) ? index - 1 : slides.length - visibleSlides;
+      moveCarousel();
+    });
+
+    // Auto-rotate every 15 seconds
+    setInterval(() => {
+      index = (index < slides.length - visibleSlides) ? index + 1 : 0;
+      moveCarousel();
+    }, 5000);
+
+    // Initialize first slide on load
+    moveCarousel();
+
+  </script>
+  {% endblock %}
+</body>
+
+</html>

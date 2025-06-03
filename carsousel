@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto-Rotating Carousel</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+   body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.carousel {
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 900px;
+}
+
+.carousel-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 1s ease-in-out;
+}
+
+.carousel-track img {
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.5s, filter 0.5s;
+  filter: brightness(0.5);
+  flex-shrink: 0;
+}
+
+.carousel-track img.center {
+  transform: scale(1.1);
+  filter: brightness(1);
+}
+
+.carousel-track img:hover {
+  transform: scale(1.2);
+  filter: brightness(1.2);
+}
+
+.nav-btn {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  font-size: 20px;
+  padding: 10px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+#nextBtn {
+  right: 0;
+}
+
+@media (max-width: 768px) {
+  .carousel-track img {
+    width: 50%;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-track img {
+    width: 100%;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="carousel">
+    <button id="prevBtn" class="nav-btn">❮</button>
+    <div class="carousel-container">
+      <div class="carousel-track">
+        <img src="https://images.unsplash.com/photo-1569069630763-1e08603b2161?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image 1">
+        <img src="https://images.unsplash.com/photo-1569069630763-1e08603b2161?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image 2" class="center">
+        <img src="https://images.unsplash.com/photo-1569069630763-1e08603b2161?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image 3">
+        <img src="https://images.unsplash.com/photo-1569069630763-1e08603b2161?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image 4">
+        <img src="https://images.unsplash.com/photo-1569069630763-1e08603b2161?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image 5">
+      </div>
+    </div>
+    <button id="nextBtn" class="nav-btn">❯</button>
+  </div>
+
+  <script>
+    const track = document.querySelector('.carousel-track');
+    const nextButton = document.getElementById('nextBtn');
+    const prevButton = document.getElementById('prevBtn');
+    const slides = document.querySelectorAll('.carousel-track img');
+    const slideWidth = 300;
+    const visibleSlides = 3;
+    let index = 0;
+
+    const moveCarousel = () => {
+      track.style.transform = `translateX(-${index * slideWidth}px)`;
+      slides.forEach((slide, i) => {
+        slide.classList.remove('center');
+        if (i === index + 1) slide.classList.add('center');
+      });
+    };
+
+    nextButton.addEventListener('click', () => {
+      if (index < slides.length - visibleSlides) {
+        index++;
+      } else {
+        index = 0;
+      }
+      moveCarousel();
+    });
+
+    prevButton.addEventListener('click', () => {
+      if (index > 0) {
+        index--;
+      } else {
+        index = slides.length - visibleSlides;
+      }
+      moveCarousel();
+    });
+
+    setInterval(() => {
+      if (index < slides.length - visibleSlides) {
+        index++;
+      } else {
+        index = 0;
+      }
+      moveCarousel();
+    }, 15000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,356 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Distance Traveled by Bird</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='distance.css') }}">
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div id="wrapper">
+    <h2>Distance Traveled by Bird</h2>
+    <form method="POST" id="distance-form">
+        <label for="bird_id">Bird:</label>
+        <select id="bird_id" name="bird_id" required>
+            <option value="">Select a Bird</option>
+            <option value="1_bill">Bill</option>
+            <option value="2_gabbar">Gabbar</option>
+            <option value="3_mogambo">Mogambo</option>
+            <option value="4_godfather">Godfather</option>
+            <option value="5_rifle">Rifle</option>
+            <option value="6_tkbhai">Tkbhai</option>
+        </select>
+
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" required>
+
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" required>
+
+        <a href="#plot-container"><button type="submit">Submit</button></a>
+    </form>
+</div>
+
+{% if plot_html %}
+<div id="plot-container" class="plot-container">
+    <p class="map-description">This interactive map displays the total distance traveled by a hornbill over a selected date range. It uses Plotly to render a visual path that connects the recorded GPS locations of the selected bird, allowing users to trace its movement across time.</p>
+    {{ plot_html|safe }}
+    {% endif %}
+
+    {% if selected_bird_total_distance %}
+    <div class="distance-summary">
+        <h3>Total Distance Summary</h3>
+        <p>Bird: {{ selected_bird_total_distance.bird_id }}</p>
+        <p>Total Distance: {{ selected_bird_total_distance.total_distance|round(2) }} km</p>
+        <p>Date Range: {{ start_date }} to {{ end_date }}</p>
+    </div>
+    {% endif %}
+
+    {% block scripts %}
+    <script>
+        // ====== Mobile View Alert Script ======
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('distance-form');
+
+            function isMobile() {
+                return window.innerWidth <= 768;
+            }
+
+            form.addEventListener('submit', function (event) {
+                if (isMobile()) {
+                    event.preventDefault(); // Stop form submission
+                    alert('Switch to desktop view to view the map');
+                }
+            });
+        });
+        // ====== End Mobile View Alert Script ======
+
+
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        const hamburgerIcon = document.getElementById('hamburger-icon');
+
+        const hamburgerSrc = hamburgerIcon.dataset.hamburger;
+        const closeSrc = hamburgerIcon.dataset.close;
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+
+            if (navLinks.classList.contains('show')) {
+                hamburgerIcon.src = closeSrc;
+            } else {
+                hamburgerIcon.src = hamburgerSrc;
+            }
+        });
+
+
+        // Declare currentIndex only once
+        let currentIndex = 0;
+
+        function submitForm(event) {
+            event.preventDefault();
+
+            let plotContainer = document.querySelector('.plot-container');
+            // document.querySelector('.plot-container').scrollIntoView({ behavior: 'smooth' });
+            // If the container doesn't exist, create it and append it to the body or another suitable element
+            if (!plotContainer) {
+                plotContainer = document.createElement('div');
+                plotContainer.className = 'plot-container';
+                document.body.appendChild(plotContainer); // Append it to the body or another relevant container
+            }
+
+            const formContainer = document.getElementById('wrapper');
+            formContainer.style.transform = 'translateX(-100%)';
+
+            const formData = new FormData(event.target);
+
+            fetch("{{ url_for('home') }}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Received data:', data);
+
+                    if (data.plot_html) {
+                        plotContainer.innerHTML = data.plot_html;
+                        plotContainer.classList.add('active');
+                        plotContainer.style.transform = 'translateX(0)';
+
+
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+            setTimeout(() => {
+                plotContainer.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const startDateInput = document.getElementById("start_date");
+            const endDateInput = document.getElementById("end_date");
+
+            // Set min date to 1950-01-01
+            const minDate = "1950-01-01";
+
+            // Get today's date in YYYY-MM-DD format
+            const today = new Date().toISOString().split("T")[0];
+
+            // Apply the date range restriction
+            startDateInput.min = minDate;
+            startDateInput.max = today;
+            endDateInput.min = minDate;
+            endDateInput.max = today;
+        });
+
+        // chatbot
+        document.addEventListener("DOMContentLoaded", function () {
+            // Configuration
+            const CONFIG = {
+                API_URL: "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta", // Replace with an appropriate model URL if needed
+                API_KEY: "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", // IMPORTANT: Replace with your actual key
+                MAX_HISTORY: 5, // Limit conversation history
+                TYPING_DELAY: 6000 // Simulated typing delay
+            };
+
+            // DOM Element References
+            const elements = {
+                chatbotButton: document.getElementById("chatbot-button"),
+                chatbotContainer: document.getElementById("chatbot-container"),
+                closeChatbotButton: document.getElementById("close-chatbot"),
+                chatbotMessages: document.getElementById("chatbot-messages"),
+                userInput: document.getElementById("user-input"),
+                sendButton: document.getElementById("send-button")
+            };
+
+            // Conversation Management
+            class ChatManager {
+                constructor() {
+                    this.conversationHistory = [];
+                    this.responseCache = new Map();
+                }
+
+                trimHistory() {
+                    if (this.conversationHistory.length > CONFIG.MAX_HISTORY * 2) {
+                        this.conversationHistory = this.conversationHistory.slice(-CONFIG.MAX_HISTORY * 2);
+                    }
+                }
+
+                addToHistory(message, sender) {
+                    this.conversationHistory.push({ text: message, sender });
+                    this.trimHistory();
+                }
+
+                getContextualPrompt(userMessage) {
+                    const recentHistory = this.conversationHistory
+                        .slice(-CONFIG.MAX_HISTORY * 2)
+                        .map(msg => `${msg.sender}: ${msg.text}`)
+                        .join('\n');
+
+                    return `You are an expert on hornbills, providing comprehensive and accurate information about these fascinating birds. Your knowledge covers their biology, habitat, behavior, conservation status, and species diversity. Use the following structured information to provide clear, scientifically-based responses about hornbills.
+
+[ { "species_overview": { "total_species": 59, "habitat_regions": ["Africa", "Southeast Asia", "Indian Subcontinent"], "conservation_status": { "critically_endangered": ["Sulu Hornbill", "Visayan Hornbill"], "vulnerable": ["Helmeted Hornbill", "Rufous Hornbill"] } }, "key_characteristics": { "unique_features": [ "Large casque on bill", "Distinctive loud calls", "Important seed dispersers in forest ecosystems" ], "size_range": "45-150 cm", "diet": ["Fruits", "Insects", "Small vertebrates"] }, "ecological_importance": { "role_in_ecosystem": [ "Seed dispersal", "Forest regeneration", "Indicator species for forest health" ] } } ]
+
+Conversation History:\n${recentHistory}\n\nUser Message: ${userMessage}\n\nHornbill-Specific Response:`;
+                }
+
+                cacheResponse(message, response) {
+                    this.responseCache.set(message, response);
+                }
+
+                getCachedResponse(message) {
+                    return this.responseCache.get(message);
+                }
+
+                hasCachedResponse(message) {
+                    return this.responseCache.has(message);
+                }
+            }
+
+            // UI Interaction Utilities
+            const UIUtils = {
+                displayMessage(text, isBot = true) {
+                    const message = document.createElement("div");
+                    message.className = isBot ? "bot-message" : "user-message";
+                    message.textContent = text;
+                    elements.chatbotMessages.appendChild(message);
+                    elements.chatbotMessages.scrollTop = elements.chatbotMessages.scrollHeight;
+                },
+
+                showTypingIndicator() {
+                    const typingMessage = document.createElement("div");
+                    typingMessage.className = "bot-message";
+                    typingMessage.textContent = "Typing...";
+                    elements.chatbotMessages.appendChild(typingMessage);
+                    elements.chatbotMessages.scrollTop = elements.chatbotMessages.scrollHeight;
+                    return typingMessage;
+                }
+            };
+
+            // API Interaction Service
+            class HuggingFaceService {
+                static async fetchResponse(userMessage, chatManager) {
+                    if (chatManager.hasCachedResponse(userMessage)) {
+                        return chatManager.getCachedResponse(userMessage);
+                    }
+
+                    try {
+                        const prompt = chatManager.getContextualPrompt(userMessage);
+
+                        const response = await fetch(CONFIG.API_URL, {
+                            method: "POST",
+                            headers: {
+                                "Authorization": `Bearer ${CONFIG.API_KEY}`,
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                inputs: prompt,
+                                parameters: {
+                                    max_new_tokens: 250,
+                                    temperature: 0.5,
+                                    top_k: 40,
+                                    top_p: 0.9
+                                }
+                            })
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`API Error: ${response.status}`);
+                        }
+
+                        const data = await response.json();
+                        const fullGeneratedText = data[0]?.generated_text || this.getFallbackResponse();
+                        const botResponse = this.extractModelResponse(fullGeneratedText, prompt);
+
+                        chatManager.cacheResponse(userMessage, botResponse);
+                        return botResponse;
+
+                    } catch (error) {
+                        console.error("API Interaction Error:", error);
+                        return this.getFallbackResponse();
+                    }
+                }
+
+                static extractModelResponse(fullText, prompt) {
+                    const botResponse = fullText.replace(prompt, '').trim();
+                    const cleanedResponse = botResponse.replace(/^(Hornbill-Specific Response:|\n)/g, '').trim();
+                    const responseLines = cleanedResponse.split('\n');
+                    return responseLines[0].trim();
+                }
+
+                static getFallbackResponse() {
+                    const fallbacks = [
+                        "I'm processing your request. Can you provide more details?",
+                        "That's an intriguing question about the museum. Let me think.",
+                        "I'm here to help. Could you clarify your query?",
+                        "Can you rephrase that? I'll do my best to assist."
+                    ];
+                    return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+                }
+            }
+
+            // Chatbot Controller
+            class ChatbotController {
+                constructor() {
+                    this.chatManager = new ChatManager();
+                    this.initEventListeners();
+                }
+
+                initEventListeners() {
+                    elements.chatbotButton.addEventListener("click", () => this.openChatbot());
+                    elements.closeChatbotButton.addEventListener("click", () => this.closeChatbot());
+                    elements.sendButton.addEventListener("click", () => this.handleUserMessage());
+                    elements.userInput.addEventListener("keypress", (e) => {
+                        if (e.key === "Enter") this.handleUserMessage();
+                    });
+                }
+
+                openChatbot() {
+                    elements.chatbotContainer.style.display = "block";
+                    elements.chatbotMessages.innerHTML = "";
+                    UIUtils.displayMessage("Welcome! Ask me anything about Hornbills, and I'll do my best to assist.");
+                }
+
+                closeChatbot() {
+                    elements.chatbotContainer.style.display = "none";
+                }
+
+                async handleUserMessage() {
+                    const userMessage = elements.userInput.value.trim();
+                    if (!userMessage) return;
+
+                    UIUtils.displayMessage(userMessage, false);
+                    this.chatManager.addToHistory(userMessage, 'user');
+                    elements.userInput.value = "";
+
+                    const typingIndicator = UIUtils.showTypingIndicator();
+
+                    try {
+                        await new Promise(resolve => setTimeout(resolve, CONFIG.TYPING_DELAY));
+                        elements.chatbotMessages.removeChild(typingIndicator);
+
+                        const botResponse = await HuggingFaceService.fetchResponse(userMessage, this.chatManager);
+                        UIUtils.displayMessage(botResponse);
+                        this.chatManager.addToHistory(botResponse, 'bot');
+
+                    } catch (error) {
+                        console.error("Message handling error:", error);
+                        UIUtils.displayMessage("Sorry, something went wrong.");
+                    }
+                }
+            }
+
+            // Initialize Chatbot
+            new ChatbotController();
+        });
+
+    </script>
+    {% endblock %}
+    {% endblock %}

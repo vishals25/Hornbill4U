@@ -1,0 +1,460 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Telemetry Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='analysis.css') }}">
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Telemetry Data Visualization</h1>
+
+    <div class="tabs">
+        <button class="tablinks" onclick="openTab(event, 'Section1')" id="defaultOpen">Single Bird Movement</button>
+        <button class="tablinks" onclick="openTab(event, 'Section2')">Multiple Bird Movement</button>
+        <button class="tablinks" onclick="openTab(event, 'Section3')">Specific Bird Movement</button>
+    </div>
+
+    <!-- Section 1 -->
+    <div id="Section1" class="tabcontent">
+        <div class="map-description">
+            <strong>Individual Migration Analysis</strong><br>
+            This visualization reveals the complete migratory journey of your selected bird. 
+            Each point represents a recorded location, connected chronologically to show movement patterns. 
+            The color gradient indicates time progression, helping you identify resting spots, frequently visited areas, and the overall migration route. 
+            Zoom in to examine specific locations or hover over points for detailed timestamps.
+        </div>
+        <div class="content-container">
+            <div class="left-column">
+                <h3>Single Movement</h3>
+                <label for="bird1">Bird:</label>
+                <select id="bird1" required>
+                    <option value="">Select a Bird</option>
+                    <option value="1_bill">Bill</option>
+                    <option value="2_gabbar">Gabbar</option>
+                    <option value="3_mogambo">Mogambo</option>
+                    <option value="4_godfather">Godfather</option>
+                    <option value="5_rifle">Rifle</option>
+                    <option value="6_tkbhai">Tkbhai</option>
+                </select>
+
+                <label for="basemap1">Basemap:</label>
+                <select id="basemap1">
+                    <option value="">Select a Map</option>
+                    {% for map in basemaps %}
+                    <option value="{{ map }}">{{ map }}</option>
+                    {% endfor %}
+                </select>
+
+                <button onclick="plotSection1()">Plot Movement</button>
+            </div>
+
+            <div class="right-column">
+                <div id="plot1"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div id="Section2" class="tabcontent">
+        <div class="map-description">
+            <strong>Comparative Movement Analysis</strong><br>
+        This comparative view displays multiple birds' movements during your selected timeframe. Different colors represent individual birds, allowing you to observe group dynamics, overlapping territories, and divergent migration paths. 
+        The timeline feature helps identify whether birds migrate together or independently, and how environmental factors might influence their routes.
+        </div>
+        <div class="content-container1">
+            <div class="left-column">
+                <h3>Multiple Movement</h3>
+                <label for="year2">Year:</label>
+                <select id="year2">
+                    <option value="">Select a Year</option>
+                    {% for year in years %}
+                    <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="month2">Month:</label>
+                <select id="month2">
+                    <option value="">Select a Month</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                </select>
+
+                <label for="basemap2">Basemap:</label>
+                <select id="basemap2">
+                    <option value="">Select a Map</option>
+                    {% for map in basemaps %}
+                    <option value="{{ map }}">{{ map }}</option>
+                    {% endfor %}
+                </select>
+
+                <button onclick="plotSection2()">Plot Movements</button>
+            </div>
+
+            <div class="right-column">
+                <div id="plot2"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div id="Section3" class="tabcontent">
+        <div class="map-description">
+            <strong>Detailed Temporal Analysis</strong><br>
+            This focused visualization combines individual bird tracking with specific time filtering. 
+            See exactly where your selected bird traveled during particular months, with enhanced temporal resolution. 
+            The heatmap effect shows concentration areas, while movement vectors indicate direction and speed. 
+            Ideal for studying seasonal behaviors, nesting patterns, or responses to environmental changes.
+        </div>
+        <div class="content-container3">
+            <div class="left-column">
+                <h3>Specific Movement</h3>
+                <label for="bird3">Bird:</label>
+                <select id="bird3">
+                    <option value="">Select a Bird</option>
+                    <option value="1_bill">Bill</option>
+                    <option value="2_gabbar">Gabbar</option>
+                    <option value="3_mogambo">Mogambo</option>
+                    <option value="4_godfather">Godfather</option>
+                    <option value="5_rifle">Rifle</option>
+                    <option value="6_tkbhai">Tkbhai</option>
+                </select>
+
+                <label for="year3">Year:</label>
+                <select id="year3">
+                    <option value="">Select a Year</option>
+                    {% for year in years %}
+                    <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="month3">Month:</label>
+                <select id="month3">
+                    <option value="">Select a Month</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                </select>
+
+                <label for="basemap3">Basemap:</label>
+                <select id="basemap3">
+                    <option value="">Select a Map</option>
+                    {% for map in basemaps %}
+                    <option value="{{ map }}">{{ map }}</option>
+                    {% endfor %}
+                </select>
+
+                <button onclick="plotSection3()">Plot Movement</button>
+            </div>
+
+            <div class="right-column">
+                <div id="plot3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById("defaultOpen").click();
+
+    function openTab(evt, tabName) {
+        const tabcontent = document.getElementsByClassName("tabcontent");
+        for (let i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        const tablinks = document.getElementsByClassName("tablinks");
+        for (let i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    function plotSection1() {
+        const bird = document.getElementById("bird1").value;
+        const basemap = document.getElementById("basemap1").value;
+
+        if (!bird || !basemap) {
+            alert("Please select both a bird and a basemap.");
+            return;
+        }
+
+        fetch('/plot', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ section: 'section1', bird_id: bird, basemap: basemap })
+        })
+        .then(res => res.json())
+        .then(data => {
+            Plotly.newPlot('plot1', JSON.parse(data).data, JSON.parse(data).layout);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while generating the plot.');
+        });
+    }
+
+    function plotSection2() {
+        const year = document.getElementById("year2").value;
+        const month = document.getElementById("month2").value;
+        const basemap = document.getElementById("basemap2").value;
+
+        if (!year || !month || !basemap) {
+            alert("Please select year, month and basemap.");
+            return;
+        }
+
+        fetch('/plot', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ section: 'section2', year, month, basemap })
+        })
+        .then(res => res.json())
+        .then(data => {
+            Plotly.newPlot('plot2', JSON.parse(data).data, JSON.parse(data).layout);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while generating the plot.');
+        });
+    }
+
+    function plotSection3() {
+        const bird = document.getElementById("bird3").value;
+        const year = document.getElementById("year3").value;
+        const month = document.getElementById("month3").value;
+        const basemap = document.getElementById("basemap3").value;
+
+        if (!bird || !year || !month || !basemap) {
+            alert("Please fill all fields.");
+            return;
+        }
+
+        fetch('/plot', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ section: 'section3', bird_id: bird, year, month, basemap })
+        })
+        .then(res => res.json())
+        .then(data => {
+            Plotly.newPlot('plot3', JSON.parse(data).data, JSON.parse(data).layout);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while generating the plot.');
+        });
+    }
+
+    
+    // chatbot
+    document.addEventListener("DOMContentLoaded", function () {
+        // Configuration
+        const CONFIG = {
+            API_URL: "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta", // Replace with an appropriate model URL if needed
+            API_KEY: "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", // IMPORTANT: Replace with your actual key
+            MAX_HISTORY: 5, // Limit conversation history
+            TYPING_DELAY: 6000 // Simulated typing delay
+        };
+
+        // DOM Element References
+        const elements = {
+            chatbotButton: document.getElementById("chatbot-button"),
+            chatbotContainer: document.getElementById("chatbot-container"),
+            closeChatbotButton: document.getElementById("close-chatbot"),
+            chatbotMessages: document.getElementById("chatbot-messages"),
+            userInput: document.getElementById("user-input"),
+            sendButton: document.getElementById("send-button")
+        };
+
+        // Conversation Management
+        class ChatManager {
+            constructor() {
+                this.conversationHistory = [];
+                this.responseCache = new Map();
+            }
+
+            trimHistory() {
+                if (this.conversationHistory.length > CONFIG.MAX_HISTORY * 2) {
+                    this.conversationHistory = this.conversationHistory.slice(-CONFIG.MAX_HISTORY * 2);
+                }
+            }
+
+            addToHistory(message, sender) {
+                this.conversationHistory.push({ text: message, sender });
+                this.trimHistory();
+            }
+
+            getContextualPrompt(userMessage) {
+                const recentHistory = this.conversationHistory
+                    .slice(-CONFIG.MAX_HISTORY * 2)
+                    .map(msg => `${msg.sender}: ${msg.text}`)
+                    .join('\n');
+
+                return `You are an expert on hornbills, providing comprehensive and accurate information about these fascinating birds. Your knowledge covers their biology, habitat, behavior, conservation status, and species diversity. Use the following structured information to provide clear, scientifically-based responses about hornbills.
+
+[ { "species_overview": { "total_species": 59, "habitat_regions": ["Africa", "Southeast Asia", "Indian Subcontinent"], "conservation_status": { "critically_endangered": ["Sulu Hornbill", "Visayan Hornbill"], "vulnerable": ["Helmeted Hornbill", "Rufous Hornbill"] } }, "key_characteristics": { "unique_features": [ "Large casque on bill", "Distinctive loud calls", "Important seed dispersers in forest ecosystems" ], "size_range": "45-150 cm", "diet": ["Fruits", "Insects", "Small vertebrates"] }, "ecological_importance": { "role_in_ecosystem": [ "Seed dispersal", "Forest regeneration", "Indicator species for forest health" ] } } ]
+
+Conversation History:\n${recentHistory}\n\nUser Message: ${userMessage}\n\nHornbill-Specific Response:`;
+            }
+
+            cacheResponse(message, response) {
+                this.responseCache.set(message, response);
+            }
+
+            getCachedResponse(message) {
+                return this.responseCache.get(message);
+            }
+
+            hasCachedResponse(message) {
+                return this.responseCache.has(message);
+            }
+        }
+
+        // UI Interaction Utilities
+        const UIUtils = {
+            displayMessage(text, isBot = true) {
+                const message = document.createElement("div");
+                message.className = isBot ? "bot-message" : "user-message";
+                message.textContent = text;
+                elements.chatbotMessages.appendChild(message);
+                elements.chatbotMessages.scrollTop = elements.chatbotMessages.scrollHeight;
+            },
+
+            showTypingIndicator() {
+                const typingMessage = document.createElement("div");
+                typingMessage.className = "bot-message";
+                typingMessage.textContent = "Typing...";
+                elements.chatbotMessages.appendChild(typingMessage);
+                elements.chatbotMessages.scrollTop = elements.chatbotMessages.scrollHeight;
+                return typingMessage;
+            }
+        };
+
+        // API Interaction Service
+        class HuggingFaceService {
+            static async fetchResponse(userMessage, chatManager) {
+                if (chatManager.hasCachedResponse(userMessage)) {
+                    return chatManager.getCachedResponse(userMessage);
+                }
+
+                try {
+                    const prompt = chatManager.getContextualPrompt(userMessage);
+
+                    const response = await fetch(CONFIG.API_URL, {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${CONFIG.API_KEY}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            inputs: prompt,
+                            parameters: {
+                                max_new_tokens: 250,
+                                temperature: 0.5,
+                                top_k: 40,
+                                top_p: 0.9
+                            }
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API Error: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    const fullGeneratedText = data[0]?.generated_text || this.getFallbackResponse();
+                    const botResponse = this.extractModelResponse(fullGeneratedText, prompt);
+
+                    chatManager.cacheResponse(userMessage, botResponse);
+                    return botResponse;
+
+                } catch (error) {
+                    console.error("API Interaction Error:", error);
+                    return this.getFallbackResponse();
+                }
+            }
+
+            static extractModelResponse(fullText, prompt) {
+                const botResponse = fullText.replace(prompt, '').trim();
+                const cleanedResponse = botResponse.replace(/^(Hornbill-Specific Response:|\n)/g, '').trim();
+                const responseLines = cleanedResponse.split('\n');
+                return responseLines[0].trim();
+            }
+
+            static getFallbackResponse() {
+                const fallbacks = [
+                    "I'm processing your request. Can you provide more details?",
+                    "That's an intriguing question about the museum. Let me think.",
+                    "I'm here to help. Could you clarify your query?",
+                    "Can you rephrase that? I'll do my best to assist."
+                ];
+                return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+            }
+        }
+
+        // Chatbot Controller
+        class ChatbotController {
+            constructor() {
+                this.chatManager = new ChatManager();
+                this.initEventListeners();
+            }
+
+            initEventListeners() {
+                elements.chatbotButton.addEventListener("click", () => this.openChatbot());
+                elements.closeChatbotButton.addEventListener("click", () => this.closeChatbot());
+                elements.sendButton.addEventListener("click", () => this.handleUserMessage());
+                elements.userInput.addEventListener("keypress", (e) => {
+                    if (e.key === "Enter") this.handleUserMessage();
+                });
+            }
+
+            openChatbot() {
+                elements.chatbotContainer.style.display = "block";
+                elements.chatbotMessages.innerHTML = "";
+                UIUtils.displayMessage("Welcome! Ask me anything about Hornbills, and I'll do my best to assist.");
+            }
+
+            closeChatbot() {
+                elements.chatbotContainer.style.display = "none";
+            }
+
+            async handleUserMessage() {
+                const userMessage = elements.userInput.value.trim();
+                if (!userMessage) return;
+
+                UIUtils.displayMessage(userMessage, false);
+                this.chatManager.addToHistory(userMessage, 'user');
+                elements.userInput.value = "";
+
+                const typingIndicator = UIUtils.showTypingIndicator();
+
+                try {
+                    await new Promise(resolve => setTimeout(resolve, CONFIG.TYPING_DELAY));
+                    elements.chatbotMessages.removeChild(typingIndicator);
+
+                    const botResponse = await HuggingFaceService.fetchResponse(userMessage, this.chatManager);
+                    UIUtils.displayMessage(botResponse);
+                    this.chatManager.addToHistory(botResponse, 'bot');
+
+                } catch (error) {
+                    console.error("Message handling error:", error);
+                    UIUtils.displayMessage("Sorry, something went wrong.");
+                }
+            }
+        }
+
+        // Initialize Chatbot
+        new ChatbotController();
+    });
+</script>
+{% endblock %}
